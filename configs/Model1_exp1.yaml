@@ -1,0 +1,21 @@
+num_epochs: 10
+model: model_1
+attributes:
+  sequence_len: &sequence_len 60
+  num_features: &num_features 94
+  input_shape: [*sequence_len, *num_features]
+  num_layers: 1
+  num_filters: 32
+  dilation_rates: [2,4,8] 
+  num_classes: 1
+
+pretrain:
+  dataset: ['BTC', 'ETH']
+  batch_size: 256
+  output_file: 'pretrained_models/Model1Exp1_PT.h5'
+
+fine_tune:
+  dataset: 'ETH'
+  batch_size: 128
+  output_file: 'full_models/Model1Exp10_ETH.h5'
+
