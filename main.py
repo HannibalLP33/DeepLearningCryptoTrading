@@ -10,7 +10,7 @@ import os
 
 
 def import_data(symbol:str):
-    if os.path(f"trainingDS/{symbol}/alldata.csv") == False:
+    if os.path.exists(f"trainingDS/{symbol}/alldata.csv") == False:
         data = collect_new_open_data(symbol = symbol, start_date=datetime(2024,2,8))
     else:
         data = pd.read_csv(f"trainingDS/{symbol}/alldata.csv", parse_dates = ['timestamp'])
