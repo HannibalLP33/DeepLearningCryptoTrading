@@ -5,13 +5,13 @@ import tensorflow as tf
 from common_funcs import sliding_window, ColorPrint, add_features, collect_new_open_data
 import yaml
 import argparse
-import datetime
+from datetime import datetime
 import os
 
 
 def import_data(symbol:str):
     if os.path.exists(f"trainingDS/{symbol}/alldata.csv") == False:
-        data = collect_new_open_data(symbol = symbol, start_date=datetime(2024,2,8))
+        data = collect_new_open_data(symbol = symbol, start_date=datetime(2023,12,8))
     else:
         data = pd.read_csv(f"trainingDS/{symbol}/alldata.csv", parse_dates = ['timestamp'])
     data = add_features(data)
@@ -64,13 +64,12 @@ def FineTune_Model(symbol):
     else:
         print(ColorPrint(f"FINE-TUNE", "Yellow"))
         print(f'=' * 100)
-        X,y = sliding_window(data, keys['attributes']['sequence_len'])
+        X,y,_ = sliding_window(data, keys['attributes']['sequence_len'])
         print(ColorPrint("Loading: ", "Blue"), ColorPrint(f"{keys['model'].upper()} Model", "Green"))
         trainer = CustomTrainer(model, X, y, fine_tune_parameters['output_file'])
         trainer.train_model(num_epochs=keys['num_epochs'], batch_size=fine_tune_parameters['batch_size'])
         print(f'=' * 100) 
         
-
 
         
 if __name__ == '__main__':

@@ -1,4 +1,3 @@
-import os
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
@@ -62,13 +61,13 @@ def load_csv(file_path):
 
     return df
 
-def collect_new_data(start_date =  datetime(2023,9,1), save_file = False):
+def collect_new_data(start_date =  datetime(2023,9,1), save_file = False, symbol = 'BTC'):
     ### ESTABLISH CLIENT ###
     client = CryptoHistoricalDataClient()
     ### END OF SECTION ###
 
     bars_params = CryptoBarsRequest(
-                        symbol_or_symbols=["ETH/USD"],
+                        symbol_or_symbols=[f"{symbol}/USD"],
                         timeframe=TimeFrame.Minute,
                         start = start_date
                     )
@@ -124,7 +123,6 @@ def collect_new_open_data(start_date =  datetime(2023,9,1), save_file = False, s
     df['timestamp'] = timestamp_list
     df = df.merge(bars, on = 'timestamp', how = 'left')
     df['open'] = df['open'].fillna(method = 'ffill')
-    df = df.set_index("timestamp")
     if save_file:
         file = df
         file.to_csv(f"trainingDS/{symbol}/alldata.csv", index = True)
