@@ -17,5 +17,5 @@ pretrain:
 fine_tune:
   dataset: 'ETH'
   batch_size: 128
-  output_file: 'full_models/Model1Exp10_ETH.h5'
+  output_file: 'full_models/Model1Exp1_ETH.h5'
 
