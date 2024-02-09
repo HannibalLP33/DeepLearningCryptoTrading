@@ -2,14 +2,18 @@ import pandas as pd
 from model import DLModels
 from trainer import CustomTrainer
 import tensorflow as tf
-from common_funcs import sliding_window, ColorPrint, add_features
+from common_funcs import sliding_window, ColorPrint, add_features, collect_new_open_data
 import yaml
 import argparse
+import datetime
 import os
 
 
 def import_data(symbol:str):
-    data = pd.read_csv(f"trainingDS/{symbol}/alldata.csv", parse_dates = ['timestamp'])
+    if os.path(f"trainingDS/{symbol}/alldata.csv") == False:
+        data = collect_new_open_data(symbol = symbol, start_date=datetime(2024,2,8))
+    else:
+        data = pd.read_csv(f"trainingDS/{symbol}/alldata.csv", parse_dates = ['timestamp'])
     data = add_features(data)
     
     return data
